@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Index</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Air Quality Monitor</h1>
+    <p>Check real-time air quality data for any location</p>
+    </header>
+    
+    <div class="search-box">
+        <input type="text" id="latitude" placeholder="latitude" required>
+        <input type="text" id="longitude" placeholder="longitude" required>
+        <button id="search-btn" onclick="fetchAirQuality()">
+            Check Air Quality
+        </button>
+    </div>
+
+    <div id="results">
+       <!--- <div class="loading">Loading air quality data</div> -->
+       <div class="result-card">
+        <div class="location-info">
+            <h2>Location (27.2, 45)</h2>
+            <div class="timestamp">Last updated: 26th April, 2025</div>
+        </div>
+        <div class="aqi-display">
+            <div class="aqi-item">
+                <div class="icon unthealthy">😷</div>
+                <div class="aqi-value">230</div>
+                <div class="aqi-label">PM2.5 (µg/m³)</div>
+                <div class="aqi-status unhealthy">Unhealthy</div>
+            </div>
+            <div class="aqi-item">
+                <div class="icon moderate">😐</div>
+                <div class="aqi-value">90</div>
+                <div class="aqi-label">PM10 (µg/m³)</div>
+                <div class="aqi-status moderate">Moderate</div>
+            </div>
+        </div>
+       </div>
+    </div>
+    <h1>History Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>TimeSTAMP</th>
+                <th>LAT</th>
+                <th>LON</th>
+                <th>PM2.5</th>
+                <th>PM10</th>
+            </tr>
+        </thead>
+        <tbody id="history-table">
+            <tr>
+                <td>26th April</td>
+                <td>65</td>
+                <td>34</td>
+                <td>120</td>
+                <td>90</td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+
+        const defaultLatitude = 67;
+        const defaultLongitude =  90;
+
+        const latitudeInput = document.getElementById("latitude");
+        const longitudeInput = document.getElementById("longitude");
+        const resultsDiv = document.getElementById("results");
+
+        latitudeInput.value = defaultLatitude;
+        longitudeInput.value = defaultLongitude;
+
+        const historyTable = document.getElementById("history-table");
+
+        async function fetchAirQuality() {
+            try {
+                //http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={API key}
+            const lat = latitudeInput.value;
+            const lon = longitudeInput.value;
+            const response = await fetch(
+                `http://localhost/aqi/backend/main.php?lat=${lat}&lon=${lon}&history=true`);
+            if(!response.ok){
+                document.getElementById("results").innerHTML= `
+                <div class="error">
+                    <p>Failed to fetch api. Please check your internet connection.</p>
+                </div>
+                `;
+                return;
+            }
+            
+            const history = await response.json();
+            const data = history[history?.length-1];
+
+            console.log(history);
+            
+            let pm2_5Icon = "";
+            let pm10Icon = "";
+
+            let pm2_5Status = "";
+            let pm10Status = "";
+
+            if(data.pm2 < 60){
+                pm2_5Icon = "😊";
+                pm2_5Status = "Good";
+            }
+            else if(data.pm2 < 150){
+                pm2_5Icon = "😐";
+                pm2_5Status = "Moderate";
+            }
+            else{
+                pm2_5Icon = "😷";
+                pm2_5Status = "Unhealthy";
+            }
+
+            if(data.pm10 < 60){
+                pm10Icon = "😊";
+                pm10Status = "Good";
+            }
+            else if(data.pm10 < 150){
+                pm10Icon = "😐";
+                pm10Status = "Moderate";
+            }
+            else{
+                pm10Icon = "😷";
+                pm10Status = "Unhealthy";
+            }
+
+            
+
+            resultsDiv.innerHTML = `
+                  <div class="result-card">
+                  <div class="location-info">
+                     <h2>Location (${latitudeInput.value}, ${longitudeInput.value})</h2>
+                     <div class="timestamp">Last updated: ${new Date(data.timestamp)}</div>
+                   </div>
+                  <div class="aqi-display">
+                      <div class="aqi-item">
+                           <div class="icon unthealthy">${pm2_5Icon}</div>
+                          <div class="aqi-value">${data.pm2}</div>
+                            <div class="aqi-label">PM2.5 (µg/m³)</div>
+                          <div class="aqi-status unhealthy">${pm2_5Status}</div>
+                       </div>
+                       <div class="aqi-item">
+                         <div class="icon moderate">${pm10Icon}</div>
+                            <div class="aqi-value">${data.pm10}</div>
+                            <div class="aqi-label">PM10 (µg/m³)</div>
+                            <div class="aqi-status moderate">${pm10Status}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                displayHistory(history);
+
+            } catch(error){
+                
+                document.getElementById("results").innerHTML= `
+                <div class="error">
+                    <p>Failed to fetch api. Please check your internet connection.
+                </div>
+                `;
+            }
+        }
+
+        async function displayHistory(data) {
+            const tbody = document.getElementById("history-table");
+            console.log("DATA::", data);
+
+            let finalHtmlRow = "";
+            data.forEach((airData)=>{
+                finalHtmlRow += `
+                <tr>
+                    <td>${airData.timestamp}</td>
+                    <td>${airData.lat}</td>
+                    <td>${airData.lon}</td>
+                    <td>${airData.pm2}</td>
+                    <td>${airData.pm10}</td>
+                </tr>
+                `
+            })
+            tbody.innerHTML = finalHtmlRow;
+        }
+        fetchAirQuality()
+    </script>
+</body>
+</html>

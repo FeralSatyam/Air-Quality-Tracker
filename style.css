@@ -1,0 +1,158 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  h1 {
+    color: #3498db;
+  }
+  .search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex: 1;
+    min-width: 100px;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #2980b9;
+  }
+  .result-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .location-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .aqi-display {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .aqi-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 150px;
+  }
+  .aqi-value {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .aqi-label {
+    margin-top: 10px;
+    color: #7f8c8d;
+  }
+  .aqi-status {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  .icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+  }
+  .good {
+    color: #2ecc71;
+  }
+  .moderate {
+    color: #f39c12;
+  }
+  .unhealthy {
+    color: #e74c3c;
+  }
+  .timestamp {
+    text-align: right;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+  .loading {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #7f8c8d;
+  }
+  .error {
+    background-color: #fff0f0;
+    color: #e74c3c;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 0.9em;
+  }
+  
+  td {
+    color: #555;
+    font-size: 0.95em;
+  }
+  
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  @media (max-width: 600px) {
+    table {
+      font-size: 0.85em;
+    }
+    
+    th, td {
+      padding: 8px 10px;
+    }
+  }
