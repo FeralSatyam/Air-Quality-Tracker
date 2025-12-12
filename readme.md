@@ -23,9 +23,6 @@ Air Quality Tracker is a web application that displays real-time air quality inf
 ├── backend/ # PHP backend for data fetching
 └── assets/ # Optional images or client assets
 
-pgsql
-Copy code
-
 ## How It Works
 1. User opens the web page and selects a location.
 2. JavaScript triggers a request to the PHP backend.
